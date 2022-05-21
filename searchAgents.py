@@ -294,14 +294,14 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "* YOUR CODE HERE *"
-        return (self.startingPosition, (self.corners[0], self.corners[1], self.corners[2], self.corners[3]))
+        return (self.startingPosition, (self.corners[0], self.corners[1], self.corners[2], self.corners[3]))  
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "* YOUR CODE HERE *"
-        return len(state[1]) == 0
+        return len(state[1]) == 0  
         ##      all the corners will have been removed
 
 
@@ -372,9 +372,9 @@ class CornersProblem(search.SearchProblem):
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
-      state:   The current search state
-               (a data structure you chose in your search problem)
-      problem: The CornersProblem instance for this layout.
+        state:   The current search state
+                (a data structure you chose in your search problem)
+        problem: The CornersProblem instance for this layout.
     This function should always return a number that is a lower bound on the
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
@@ -411,6 +411,7 @@ def nextPoint(position, corners):
             nextCorner = corner
 
     return nextCorner
+    # return 0
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -474,28 +475,25 @@ class AStarFoodSearchAgent(SearchAgent):
         self.searchFunction = lambda prob: search.aStarSearch(prob, foodHeuristic)
         self.searchType = FoodSearchProblem
 
+
+
 def foodHeuristic(state, problem):
     """
     Your heuristic for the FoodSearchProblem goes here.
-
     This heuristic must be consistent to ensure correctness.  First, try to come
     up with an admissible heuristic; almost all admissible heuristics will be
     consistent as well.
-
     If using A* ever finds a solution that is worse uniform cost search finds,
-    your heuristic is *not* consistent, and probably not admissible!  On the
+    your heuristic is not consistent, and probably not admissible!  On the
     other hand, inadmissible or inconsistent heuristics may find optimal
     solutions, so be careful.
-
     The state is a tuple ( pacmanPosition, foodGrid ) where foodGrid is a Grid
     (see game.py) of either True or False. You can call foodGrid.asList() to get
     a list of food coordinates instead.
-
     If you want access to info like walls, capsules, etc., you can query the
     problem.  For example, problem.walls gives you a Grid of where the walls
     are.
-
-    If you want to *store* information to be reused in other calls to the
+    If you want to store information to be reused in other calls to the
     heuristic, there is a dictionary called problem.heuristicInfo that you can
     use. For example, if you only want to count the walls once and store that
     value, try: problem.heuristicInfo['wallCount'] = problem.walls.count()
@@ -503,8 +501,15 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    "* YOUR CODE HERE *"
+    foodList = foodGrid.asList()
+    if len(foodList):
+        foodDistance = [mazeDistance(position, food, problem.startingGameState) 
+                        for food in foodList]
+        # print(max(foodDistance))
+        return max(foodDistance)
+    else:
+        return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -535,6 +540,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        return search.bfs(problem)
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -571,6 +577,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        return self.food[x][y]
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):

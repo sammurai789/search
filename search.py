@@ -175,12 +175,13 @@ def breadthFirstSearch(problem):
     while not queue.isEmpty():
         node = queue.pop()
         if problem.isGoalState(node.state):
-            print("check node :", node.state)
+            # print("check node :", node.state)
             return node.solution()
         checked.add(node.state)
         for child in node.expand(problem) :
             if child.state not in checked  and (child not in queue.list):
                 queue.push(child)
+    # print(len(queue))
     return []
 
 def uniformCostSearch(problem):
